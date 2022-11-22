@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 
 class ViewController: UIViewController {
-
+    
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
@@ -20,14 +20,19 @@ class ViewController: UIViewController {
     
     private func setupMap() {
         //43.0004457, -81.3296235
-        let location = CLLocation(latitude: 43.0004457, longitude: -81.3296235)
+        let location = CLLocation(latitude: 43.0130, longitude: -81.1994 )
         
-        let region = MKCoordinateRegion(center: <#T##CLLocationCoordinate2D#>, latitudinalMeters: <#T##CLLocationDistance#>, longitudinalMeters: <#T##CLLocationDistance#>)
+        //where we are currently and you want to see beyond that point
+        let radiusInMeter : CLLocationDistance = 1000
         
-        mapView.setRegion(<#T##region: MKCoordinateRegion##MKCoordinateRegion#>, animated: true)
+        let region = MKCoordinateRegion(center: location.coordinate,
+                                        latitudinalMeters: radiusInMeter,
+                                        longitudinalMeters: radiusInMeter)
+        
+        mapView.setRegion(region, animated: true)
         
     }
-
-
+    
+    
 }
 
