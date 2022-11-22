@@ -31,6 +31,14 @@ class ViewController: UIViewController {
         
         mapView.setRegion(region, animated: true)
         
+        //Camera boundary
+        let cameraBoundary = MKMapView.CameraBoundary(coordinateRegion: region)
+        mapView.setCameraBoundary(cameraBoundary, animated: true)
+        
+        //control zooming
+        let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000)
+        mapView.setCameraZoomRange(zoomRange, animated: true)
+        
     }
     
     
