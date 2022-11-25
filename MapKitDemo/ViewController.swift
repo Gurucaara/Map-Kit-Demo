@@ -22,20 +22,28 @@ class ViewController: UIViewController {
         
         // 15. Now calling the addAnnotation
         addAnnotation(location: getFanshaweLocation())
+        addLondonAnnotation(location: getDelhiLocation())
     }
     
     // 16. Declaring the CLLocation in new function
     private func getFanshaweLocation()-> CLLocation {
         return CLLocation(latitude: 43.0130, longitude: -81.1994 )
     }
-    
+    private func getDelhiLocation() -> CLLocation {
+        return CLLocation(latitude: 43.0307, longitude: -81.1494)
+    }
     // 10. Creating a new function for adding the annotation
     private func addAnnotation (location: CLLocation) {
         //12. making annotation for mapView.addAnnotation
         //whereas MKAnnotation is not a class or a function it's an protocol
-        let annotation = MyAnnotation(coordinate: location.coordinate, title: "My Title", subtitle: "My Subtitle Here", glyphText: "Puru" )
+        let annotation = MyAnnotation(coordinate: location.coordinate, title: "My Title", subtitle: "My Subtitle Here", glyphText: "Puru" , markerTintColour: UIColor.systemBlue)
         // 11. Adding the map annotation
         mapView.addAnnotation(annotation)
+    }
+    private func addLondonAnnotation (location: CLLocation) {
+        let annotation2 = MyAnnotation(coordinate: location.coordinate, title: "London Airport", subtitle: "Airport", glyphText: "Mumma", markerTintColour: UIColor.systemPink)
+        mapView.addAnnotation(annotation2)
+        
     }
     
     //3. making up function for setup map
@@ -49,7 +57,7 @@ class ViewController: UIViewController {
         let location = getFanshaweLocation()
         
         //6.where we are currently and you want to see beyond that point
-        let radiusInMeter : CLLocationDistance = 1000
+        let radiusInMeter : CLLocationDistance = 10000
         
         let region = MKCoordinateRegion(center: location.coordinate,
                                         latitudinalMeters: radiusInMeter,
@@ -58,11 +66,11 @@ class ViewController: UIViewController {
         //7. Setting up the reigon
         mapView.setRegion(region, animated: true)
         
-        //8. Setting camera boundary
+//        //8. Setting camera boundary
         let cameraBoundary = MKMapView.CameraBoundary(coordinateRegion: region)
         mapView.setCameraBoundary(cameraBoundary, animated: true)
-        
-        //9. setting up control zooming
+//
+//        //9. setting up control zooming
         let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000)
         mapView.setCameraZoomRange(zoomRange, animated: true)
         
@@ -92,7 +100,10 @@ extension ViewController: MKMapViewDelegate {
         view.leftCalloutAccessoryView = UIImageView(image: image)
         
         // 23. Change color of the pin/marker
-        view.markerTintColor = UIColor.purple
+        if let myMarkerAnnotation = annotation as? MyAnnotation{
+            view.markerTintColor = myMarkerAnnotation.markerTintColor
+        }
+//        view.markerTintColor = UIColor.purple
         
         // 24. change the colour of the accessories
         view.tintColor = UIColor.systemMint
@@ -117,13 +128,16 @@ class MyAnnotation : NSObject, MKAnnotation{
     var title: String?
     var subtitle: String?
     var glyphText: String?
+    var markerTintColor : UIColor?
     
     // 14. giving it an initiallizer
-    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, glyphText: String? = nil ){
+    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, glyphText: String? = nil, markerTintColour: UIColor? = UIColor.systemOrange){
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subtitle
         self.glyphText = glyphText
+        self.markerTintColor = markerTintColour
+        
         //will set colours here too
         
         // set super after initiallising
