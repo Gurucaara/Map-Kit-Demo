@@ -82,39 +82,52 @@ class ViewController: UIViewController {
 extension ViewController: MKMapViewDelegate {
     // 19. calling map view delegate function
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "What is this ?"
-        let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+        let identifier = "myIdentifier"
+        var view : MKMarkerAnnotationView
         
-        
-        view.canShowCallout = true
-        
-        // 20. set the position of the callout
-        view.calloutOffset = CGPoint(x: 0, y: 10)
-        
-        // 21. to add functionalities or button to the right side of the callout
-        let button = UIButton(type: .detailDisclosure)
-        view.rightCalloutAccessoryView = button
-        
-        // 22. add image to left side of the callout
-        let image = UIImage(systemName: "graduationcap.circle.fill")
-        view.leftCalloutAccessoryView = UIImageView(image: image)
-        
-        // 23. Change color of the pin/marker
-        if let myMarkerAnnotation = annotation as? MyAnnotation{
-            view.markerTintColor = myMarkerAnnotation.markerTintColor
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
+        {
+            // get updated annotation
+            dequeuedView.annotation = annotation
+            
+            // use resuable view
+            view = dequeuedView
+        } else {
+            view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            
+            
+            view.canShowCallout = true
+            
+            // 20. set the position of the callout
+            view.calloutOffset = CGPoint(x: 0, y: 10)
+            
+            // 21. to add functionalities or button to the right side of the callout
+            let button = UIButton(type: .detailDisclosure)
+            view.rightCalloutAccessoryView = button
+            
+            // 22. add image to left side of the callout
+            let image = UIImage(systemName: "graduationcap.circle.fill")
+            view.leftCalloutAccessoryView = UIImageView(image: image)
+            
+            // 23. Change color of the pin/marker
+            if let myMarkerAnnotation = annotation as? MyAnnotation{
+                view.markerTintColor = myMarkerAnnotation.markerTintColor
+            }
+    //        view.markerTintColor = UIColor.purple
+            
+            // 24. change the colour of the accessories
+            view.tintColor = UIColor.systemMint
+            
+            // 25. what if you wanted to show gliph
+            //        view.glyphText = annotation.glyphText
+            // Performing optional binding with type casting
+            if let myAnnotation = annotation as? MyAnnotation {
+                view.glyphText = myAnnotation.glyphText
+            }
+            
+            
         }
-//        view.markerTintColor = UIColor.purple
-        
-        // 24. change the colour of the accessories
-        view.tintColor = UIColor.systemMint
-        
-        // 25. what if you wanted to show gliph
-        //        view.glyphText = annotation.glyphText
-        // Performing optional binding with type casting
-        if let myAnnotation = annotation as? MyAnnotation {
-            view.glyphText = myAnnotation.glyphText
-        }
-        
+       
         return view
     }
     
