@@ -83,8 +83,9 @@ extension ViewController: MKMapViewDelegate {
     // 19. calling map view delegate function
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let identifier = "myIdentifier"
+        // 25. changing the view
         var view : MKMarkerAnnotationView
-        
+        // 24. identifier adapting the deque
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
         {
             // get updated annotation
@@ -103,6 +104,8 @@ extension ViewController: MKMapViewDelegate {
             
             // 21. to add functionalities or button to the right side of the callout
             let button = UIButton(type: .detailDisclosure)
+            //27. calling it with a tag
+            button.tag = 100
             view.rightCalloutAccessoryView = button
             
             // 22. add image to left side of the callout
@@ -130,7 +133,10 @@ extension ViewController: MKMapViewDelegate {
        
         return view
     }
-    
+    //26. can checkout some function and here we will have accessory controlled out
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        print ("Button clicked \(control.tag)")
+    }
 }
 
 
