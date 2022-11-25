@@ -136,6 +136,18 @@ extension ViewController: MKMapViewDelegate {
     //26. can checkout some function and here we will have accessory controlled out
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         print ("Button clicked \(control.tag)")
+            // using a guard statement with optional binding
+        guard let coordinates = view.annotation?.coordinate else {
+            return
+        }
+         
+        let launchOptions = [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
+        ]
+        // 27. click on the button and get you the direction to how to get there
+        // use the apple map item
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates))
+        mapItem.openInMaps(launchOptions: launchOptions)
     }
 }
 
